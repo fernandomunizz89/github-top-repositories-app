@@ -43,7 +43,7 @@ export default class Itens extends Component {
           </View>
           <View style={styles.imagemContainer}>
             <Image style={styles.imagem} source={{ uri: this.props.item.owner.avatar_url }} />
-            <Text style={styles.txtDescricao} >{ this.props.item.owner.login }</Text>
+            <Text  style={styles.txtNome} >{ this.props.item.owner.login }</Text>
           </View>
         </View>
       </TouchableOpacity>
@@ -76,11 +76,17 @@ const styles = StyleSheet.create({
   txtTitulo: {
     color: 'steelblue',
     fontSize: 18,
-    marginBottom: 5
+    marginBottom: 5,
+    fontWeight: 'bold'
   },  
   txtDescricao: {
     fontSize: 15
   },
+  txtNome: {
+    fontSize: 15,
+    width: 100
+  },
+  
   statisticStar: {
     fontSize: 17,
     color: '#FFC300',
@@ -92,8 +98,8 @@ const styles = StyleSheet.create({
     fontWeight: 'bold'
   },
   imagem: {
-    height: 120, 
-    width: 120,
+    height: 100, 
+    width: 100,
     borderRadius: 5,
   },
   imagemContainer: {

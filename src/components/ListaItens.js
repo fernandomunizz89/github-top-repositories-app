@@ -14,7 +14,7 @@ export default class ListaItens extends Component {
       isLoading: true,
       dataSource: ds.cloneWithRows([]),
       pageSize: 1
-     };
+    };
 
      this.dataList = [];
   }
@@ -27,29 +27,24 @@ export default class ListaItens extends Component {
           this.dataList.push(item);
         });
 
-        console.log(this.dataList);
-        this.setState({ // listaItens: response.data.items,
-                        dataSource: this.state.dataSource.cloneWithRows(this.dataList),
-                      });
-        }
-      )
-      .catch(() => { console.log('Erro ao recuperar os dados'); });
+        this.setState({ dataSource: this.state.dataSource.cloneWithRows(this.dataList) });
+      }
+    )
+    .catch(() => { console.log('Erro ao recuperar os dados'); });
   }
 
   updateList = () => {
-    this.setState({ pageSize: (this.state.pageSize + 1), isLoading: true });
+    this.setState({ pageSize: ++this.state.pageSize, isLoading: true });
     axios.get(`https://api.github.com/search/repositories?q=language:Java&sort=stars&page=${this.state.pageSize}&per_page=30`)
       .then(response => { 
         let items = response.data.items;
         items.forEach(item => {
           this.dataList.push(item);
         });
-
         this.setState({ dataSource: this.state.dataSource.cloneWithRows(this.dataList) });
         }
       )
       .catch(() => { console.log('Erro ao recuperar os dados'); });
-      // this.setState({ isLoading: false });
   }
 
   render() {
@@ -83,20 +78,4 @@ export default class ListaItens extends Component {
       </View>
     );  
   }
-
-
-  /*
-  render() {
-    return (
-      <View>
-        <StatusBar backgroundColor='#333' />
-        <ScrollView style={{ backgroundColor: '#DDD' }} >
-          { this.state.listaItens.map(item => (
-            <Itens key={item.name} item={item} />
-            )
-          ) }
-        </ScrollView>
-      </View>
-    );
-  }*/
 }

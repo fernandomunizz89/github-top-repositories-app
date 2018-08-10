@@ -56,7 +56,7 @@ const styles = StyleSheet.create({
   },
   txtTitulo: {
     color: 'steelblue',
-    fontSize: 20,
+    fontSize: 18,
     marginBottom: 5,
     fontWeight: 'bold'
   },  
@@ -87,7 +87,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    margin: 10
+    margin: 5
   },
   txtContainer: {
     flexDirection: 'column',
