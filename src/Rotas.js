@@ -7,7 +7,7 @@ const Rotas = () => (
 	<Router 
 		sceneStyle={{ paddingTop: 60 }} 
 		navigationBarStyle={{ backgroundColor: '#333' }} 
-		titleStyle={{ color: 'white', fontSize: 20 }}
+		titleStyle={{ color: 'white', fontSize: 18 }}
 		barButtonIconStyle={{ tintColor: 'white' }}
 	>
 		<Scene key='listaItens' component={ListaItens} initil title='JavaPops GitHub' />

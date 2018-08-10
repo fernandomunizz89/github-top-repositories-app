@@ -1,11 +1,6 @@
 import React, { Component } from 'react';
-import {
-  ScrollView,
-  ListView,
-  StatusBar,
-  View,
-} from 'react-native';
-import { Spinner, Text } from 'native-base';
+import { ListView, StatusBar, View } from 'react-native';
+import { Spinner } from 'native-base';
 import axios from 'axios';
 import Itens from './Itens';
 
@@ -20,13 +15,21 @@ export default class ListaItens extends Component {
       dataSource: ds.cloneWithRows([]),
       pageSize: 1
      };
+
+     this.dataList = [];
   }
 
   componentDidMount() {
-    axios.get('https://api.github.com/search/repositories?q=language:Java&sort=stars&page=1')
-      .then(response => { 
-        this.setState({ listaItens: response.data.items,
-                        dataSource: this.state.dataSource.cloneWithRows(response.data.items)
+    axios.get('https://api.github.com/search/repositories?q=language:Java&sort=stars&page=1&per_page=30')
+      .then(response => {
+        let items = response.data.items;
+        items.forEach(item => {
+          this.dataList.push(item);
+        });
+
+        console.log(this.dataList);
+        this.setState({ // listaItens: response.data.items,
+                        dataSource: this.state.dataSource.cloneWithRows(this.dataList),
                       });
         }
       )
@@ -34,50 +37,50 @@ export default class ListaItens extends Component {
   }
 
   updateList = () => {
-    //console.log('Entrou, sei lá!');
-    this.setState({ pageSize: this.state.pageSize + 1 });
-    console.log('pageSize: ' + this.state.pageSize);
-
-    axios.get(`https://api.github.com/search/repositories?q=language:Java&sort=stars&page=${this.state.pageSize}`)
+    this.setState({ pageSize: (this.state.pageSize + 1), isLoading: true });
+    axios.get(`https://api.github.com/search/repositories?q=language:Java&sort=stars&page=${this.state.pageSize}&per_page=30`)
       .then(response => { 
-        this.setState({ listaItens: response.data.items,
-                        dataSource: this.state.dataSource.cloneWithRows(response.data.items),
-                        isLoading: false
-                      });
+        let items = response.data.items;
+        items.forEach(item => {
+          this.dataList.push(item);
+        });
+
+        this.setState({ dataSource: this.state.dataSource.cloneWithRows(this.dataList) });
         }
       )
       .catch(() => { console.log('Erro ao recuperar os dados'); });
-
-      this.setState({ isLoading: false });
+      // this.setState({ isLoading: false });
   }
 
   render() {
-
     const RenderFooter = () => {
-    if (this.state.isLoading && this.state.dataSource._cachedRowCount > 30) {
+      if (this.state.isLoading) {
         return (
-            <Spinner color='#687FE6' />
+          <Spinner color='#687FE6' />
         );
-    } else {
-        return null;
-    }
-  };
+      } else {
+          return null;
+      }
+    };
 
-  return (
-    <ListView dataSource={this.state.dataSource}
-        initialListSize={30}
-        onEndReachedThreshold={1}
-        pageSize={30}
-        scrollRenderAheadDistance={60}
-        enableEmptySections={true}
-        onEndReached={() => this.updateList()}
-        renderFooter={() =>
-            <RenderFooter />
-        }
-        renderRow={(rowData) =>
-         <Itens key={rowData.name} item={rowData} />
-        }
-    />
+    return (
+      <View>
+        <StatusBar backgroundColor='#333' />
+        <ListView dataSource={this.state.dataSource}
+            initialListSize={30}
+            onEndReachedThreshold={1}
+            pageSize={30}
+            scrollRenderAheadDistance={30}
+            enableEmptySections={true}
+            onEndReached={() => this.updateList()}
+            renderFooter={() =>
+                <RenderFooter />
+            }
+            renderRow={(rowData) =>
+              <Itens key={rowData.name} item={rowData} />
+            }
+        />
+      </View>
     );  
   }
 

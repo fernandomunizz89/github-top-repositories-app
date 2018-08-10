@@ -4,7 +4,7 @@ import {
   View,
   Image,
   StyleSheet,
-  TouchableHighlight
+  TouchableOpacity
 } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 
@@ -21,7 +21,7 @@ export default class Itens extends Component {
 
   render() {
     return (
-      <TouchableHighlight 
+      <TouchableOpacity 
         onPress={() => { Actions.listaPullRequest({ url: this.props.item.url, complemento: '/pulls' }); }}
       >
         <View style={styles.item} >
@@ -46,7 +46,7 @@ export default class Itens extends Component {
             <Text style={styles.txtDescricao} >{ this.props.item.owner.login }</Text>
           </View>
         </View>
-      </TouchableHighlight>
+      </TouchableOpacity>
     );
   }
 }
@@ -75,19 +75,19 @@ const styles = StyleSheet.create({
   },
   txtTitulo: {
     color: 'steelblue',
-    fontSize: 20,
+    fontSize: 18,
     marginBottom: 5
   },  
   txtDescricao: {
     fontSize: 15
   },
   statisticStar: {
-    fontSize: 18,
+    fontSize: 17,
     color: '#FFC300',
     fontWeight: 'bold'
   },
   statisticFork: {
-    fontSize: 18,
+    fontSize: 17,
     color: '#FFC300',
     fontWeight: 'bold'
   },
